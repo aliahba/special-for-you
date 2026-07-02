@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Location Share</title>
+<style>
+body{
+    font-family:Arial;
+    text-align:center;
+    margin-top:60px;
+}
+button{
+    padding:15px 30px;
+    font-size:18px;
+}
+</style>
+</head>
+<body>
+
+<h2>Share Current Location</h2>
+
+<button onclick="getLocation()">Share Location</button>
+
+<p id="status"></p>
+
+<script>
+
+function getLocation(){
+
+if(!navigator.geolocation){
+document.getElementById("status").innerHTML="Geolocation not supported.";
+return;
+}
+
+navigator.geolocation.getCurrentPosition(success,error,{
+enableHighAccuracy:true
+});
+
+}
+
+function success(position){
+
+let lat=position.coords.latitude;
+let lng=position.coords.longitude;
+
+document.getElementById("status").innerHTML=
+`
+Latitude: ${lat}<br><br>
+Longitude: ${lng}<br><br>
+
+<a href="https://maps.google.com/?q=${lat},${lng}" target="_blank">
+Open in Google Maps
+</a>
+`;
+
+}
+
+function error(err){
+
+document.getElementById("status").innerHTML=
+"Permission denied or location unavailable.";
+
+}
+
+</script>
+
+</body>
+</html>
